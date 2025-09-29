@@ -33,24 +33,5 @@ This project is a **blockchain-powered certificate issuance and verification sys
 git clone https://github.com/Abdilahi1/blockchain-based-certificate-system.git
 cd blockchain-certificate-verification
 
----
 
-### 2️⃣ Install Dependencies
-```bash
-pip install -r requirements.txt
-
----
-
-3️⃣ Start Ganache
-Download and run Ganache to set up a local Ethereum blockchain.
-Import accounts from ganache_accounts.json if needed.
-
----
-4️⃣ Deploy Smart Contract
-python scripts/deploy.py
-5️⃣ Run the Backend
-python App.py
-6️⃣ Access the Application
-Open your browser and go to:
-👉 http://localhost:5000
 
