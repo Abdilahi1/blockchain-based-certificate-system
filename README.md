@@ -32,46 +32,60 @@ This project is a **blockchain-powered certificate issuance and verification sys
 ```bash
 git clone https://github.com/Abdilahi1/blockchain-based-certificate-system.git
 cd blockchain-certificate-verification
-
+```
 ---
 
-# Step 2: Update package list
+### Step 2: Update package list
+```bash
 echo "📦 Updating system packages..."
 sudo apt-get update -y
-
-# Step 3: Install Python3 & pip
+```
+### Step 3: Install Python3 & pip
+```bash
 echo "🐍 Installing Python3 and pip..."
 sudo apt-get install -y python3 python3-pip
+```
 
-# Step 4: Install virtual environment
+### Step 4: Install virtual environment
+```bash
 echo "📂 Setting up virtual environment..."
 pip3 install virtualenv
 virtualenv venv
 source venv/bin/activate
+```
 
-# Step 5: Install project dependencies
+### Step 5: Install project dependencies
+```bash
 echo "📦 Installing project dependencies..."
 pip install -r requirements.txt
+```
 
-# Step 6: Install Ganache CLI (Node.js required)
+### Step 6: Install Ganache CLI (Node.js required)
+```bash
 echo "🔗 Installing Ganache CLI..."
 npm install -g ganache-cli
+```
 
-# Step 7: Done
+### Step 7: Done
+```bash
 echo "✅ Setup complete! You can now run the project."
 echo "👉 To start Ganache: ganache-cli"
 echo "👉 To run the backend: python App.py"
+```
 
-# Access the Application
+### Access the Application
 Open your browser and go to:
+```bash
 👉 http://localhost:5000
+```
 
-# 🤝 Contributing
+###  🤝 Contributing
 Contributions are welcome! Please fork the repository and submit a pull request.
 
-# 👨‍💻 Authors
-Daadir0
-Abdilahi 1
+###  👨‍💻 Authors
+- Daadir0
+- Abdilahi 1
+
 
 
 
