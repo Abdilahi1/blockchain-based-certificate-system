@@ -25,27 +25,6 @@ This project is a **blockchain-powered certificate issuance and verification sys
 
 ---
 
-## 📂 Project Structure
-Blockchain/
-│── App.py # Main backend application
-│── contracts/Credentials.sol # Smart contract
-│── blockchain_credentials_schema.sql # Database schema
-│── ganache_accounts.json # Test accounts for Ganache
-│── build/contract.json # Compiled smart contract ABI
-│── scripts/
-│ ├── deploy.py # Deploy the smart contract
-│ ├── interact.py # Interact with the blockchain
-│ └── cli.py # Command-line interface
-│── static/
-│ ├── css/style.css # Stylesheet
-│ ├── js/script.js # Frontend logic
-│ └── images/ # Icons and assets
-│── templates/
-│ └── index.html # Frontend UI
-│── requirements.txt # Python dependencies
-
-
----
 
 ## ⚡ Installation & Setup
 
@@ -54,4 +33,18 @@ Blockchain/
 git clone https://github.com/Abdilahi1/blockchain-based-certificate-system.git
 cd blockchain-certificate-verification
 
+### 2️⃣ Install Dependencies
+```bash
+pip install -r requirements.txt
+
+3️⃣ Start Ganache
+Download and run Ganache to set up a local Ethereum blockchain.
+Import accounts from ganache_accounts.json if needed.
+4️⃣ Deploy Smart Contract
+python scripts/deploy.py
+5️⃣ Run the Backend
+python App.py
+6️⃣ Access the Application
+Open your browser and go to:
+👉 http://localhost:5000
 
