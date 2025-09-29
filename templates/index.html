@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blockchain Credential System</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+<body>
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- 1. LOGIN/REGISTER PAGE -->
+    <div id="loginRegisterPage" class="page active">
+        <div class="auth-container">
+            <!-- Toggle Buttons -->
+            <div class="auth-toggle">
+                <button id="loginToggle" class="toggle-btn active">Sign In</button>
+                <button id="registerToggle" class="toggle-btn">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <div class="auth-card">
+                    <h1>Welcome Back</h1>
+                    <div class="subtitle">Sign in to your account</div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="loginUsername" placeholder="Username or Email" required>
+                        <span class="input-icon"><img src="{{ url_for('static', filename='images/user.png') }}" width="20"></span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                            <img src="{{ url_for('static', filename='images/view.png') }}" width="20">
+                        </button>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="login()">Sign In</button>
+                    
+                    <div class="form-footer">
+                        <p>Don't have an account? <span class="link" onclick="switchToRegister()">Register here</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="registerForm" class="auth-form">
+                <div class="auth-card">
+                    <h1>Create Account</h1>
+                    <div class="subtitle">Join our blockchain credential system</div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="registerUsername" placeholder="Username" required>
+                        <span class="input-icon"><img src="{{ url_for('static', filename='images/user.png') }}" width="20"></span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="email" id="registerEmail" placeholder="Email Address" required>
+                        <span class="input-icon"><img src="{{ url_for('static', filename='images/mail.png') }}" width="20"></span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="registerPassword" placeholder="Password (min 8 characters)" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                            <img src="{{ url_for('static', filename='images/view.png') }}" width="20">
+                        </button>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                            <img src="{{ url_for('static', filename='images/view.png') }}" width="20">
+                        </button>
+
+                    </div>
+                    
+                    <div class="password-strength">
+                        <div class="strength-meter">
+                            <div class="strength-fill"></div>
+                        </div>
+                        <span class="strength-text">Password Strength</span>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="register()">Create Account</button>
+                    
+                    <div class="form-footer">
+                        <p>Already have an account? <span class="link" onclick="switchToLogin()">Sign in here</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. DASHBOARD PAGE -->
+    <div id="dashboardPage" class="page">
+        <div class="dashboard-container">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div class="welcome-section">
+                    <h1 id="dashboardTitle">Dashboard</h1>
+                    <div class="user-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalIssued">0</span>
+                            <span class="stat-label">Issued</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalOwned">0</span>
+                            <span class="stat-label">Owned</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Dropdown -->
+                <div class="user-dropdown">
+                    <button class="user-btn" onclick="toggleUserMenu()">
+                        <div class="user-avatar">
+                            <span id="userInitials">U</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="userDisplayName">User</span>
+                            <span id="userEmail">email@example.com</span>
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    
+                    <div id="userMenu" class="dropdown-menu">
+                        <button class="menu-item" onclick="showPage('userProfilePage')">
+                            <span class="menu-icon"><img src="{{ url_for('static', filename='images/user.png') }}" width="20"></span>
+                            <span>Profile</span>
+                        </button>
+                        <button class="menu-item" onclick="logout()">
+                            <span class="menu-icon"><img src="{{ url_for('static', filename='images/logout.png') }}" width="20"></span>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Cards -->
+            <div class="action-grid">
+                <div class="action-card" onclick="showPage('issuePage')">
+                    <div class="card-icon">📄</div>
+                    <div class="card-content">
+                        <h3>Issue Credential</h3>
+                        <p>Create and issue new blockchain credentials</p>
+                    </div>
+                    <div class="card-arrow">→</div>
+                </div>
+
+                <div class="action-card" onclick="showPage('verifyPage')">
+                    <div class="card-icon">✅</div>
+                    <div class="card-content">
+                        <h3>Verify Credential</h3>
+                        <p>Verify the authenticity of credentials</p>
+                    </div>
+                    <div class="card-arrow">→</div>
+                </div>
+
+                <div class="action-card" onclick="showPage('credentialsPage')">
+                    <div class="card-icon">📋</div>
+                    <div class="card-content">
+                        <h3>My Credentials</h3>
+                        <p>Manage your issued and owned credentials</p>
+                    </div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div id="activityList" class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">📄</div>
+                        <div class="activity-content">
+                            <p>Welcome to Blockchain Credentials!</p>
+                            <span class="activity-time">Just now</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ISSUE CREDENTIAL PAGE -->
+    <div id="issuePage" class="page">
+        <div class="form-container">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('dashboardPage')">← Back</button>
+                <h1>Issue New Credential</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="form-card">
+                <div class="form-section">
+                    <h2>Recipient Information</h2>
+                    <div class="input-group">
+                        <label for="recipientAddress">Recipient</label>
+                        <input type="text" id="recipientAddress" placeholder="Email address or blockchain address">
+                        <small class="input-help">Enter email address or 0x... blockchain address</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Document Upload</h2>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <div class="upload-placeholder">
+                            <div class="upload-icon">📁</div>
+                            <p>Drag and drop your file here</p>
+                            <p class="upload-sub">or <span class="upload-link">browse files</span></p>
+                            <small>Supported: PDF, PNG, JPG, DOC (Max 16MB)</small>
+                        </div>
+                        <input type="file" id="documentFile" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" hidden>
+                    </div>
+                    
+                    <div id="uploadProgress" class="upload-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">Uploading to IPFS...</span>
+                    </div>
+                    
+                    <div id="uploadResult" class="upload-result" style="display: none;">
+                        <div class="result-success">
+                            <span class="result-icon">✅</span>
+                            <div class="result-info">
+                                <span class="result-filename"></span>
+                                <span class="result-hash"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Credential Details</h2>
+                    <div class="input-group">
+                        <label for="credentialType">Credential Type</label>
+                        <input type="text" id="credentialType" placeholder="e.g., University Diploma, Professional Certificate">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="issueCredential()">
+                        <span class="btn-text">Issue Credential</span>
+                        <span class="btn-spinner" style="display: none;">⟳</span>
+                    </button>
+                </div>
+
+                <div id="issueResult" class="result-card" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. VERIFY CREDENTIAL PAGE -->
+    <div id="verifyPage" class="page">
+        <div class="form-container">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('dashboardPage')">← Back</button>
+                <h1>Verify Credential</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="form-card">
+                <div class="verify-input-section">
+                    <div class="input-group">
+                        <label for="credentialId">Credential ID</label>
+                        <input type="text" id="credentialId" placeholder="Enter credential ID (0x...)">
+                        <small class="input-help">Enter the full credential ID starting with 0x</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="verifyCredential()">
+                        <span class="btn-text">Verify Credential</span>
+                        <span class="btn-spinner" style="display: none;">⟳</span>
+                    </button>
+                </div>
+
+                <div id="verifyResult" class="result-card" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. MY CREDENTIALS PAGE -->
+    <div id="credentialsPage" class="page">
+        <div class="credentials-container">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('dashboardPage')">← Back</button>
+                <h1>My Credentials</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="credentials-filters">
+                <div class="search-box">
+                    <input type="text" id="credentialSearch" placeholder="Search credentials...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="issued">Issued</button>
+                    <button class="filter-tab" data-filter="owned">Owned</button>
+                </div>
+            </div>
+
+            <!-- Issued Credentials Section -->
+            <div class="credentials-section">
+                <div class="section-header">
+                    <h2>🏆 Credentials I Issued</h2>
+                    <span class="section-count" id="issuedCount">0</span>
+                </div>
+                <div id="issuedCredentialsList" class="credentials-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">📄</div>
+                        <p>No credentials issued yet</p>
+                        <button class="btn btn-primary" onclick="showPage('issuePage')">Issue Your First Credential</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Owned Credentials Section -->
+            <div class="credentials-section">
+                <div class="section-header">
+                    <h2>🎯 Credentials I Own</h2>
+                    <span class="section-count" id="ownedCount">0</span>
+                </div>
+                <div id="ownedCredentialsList" class="credentials-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">🏅</div>
+                        <p>No credentials received yet</p>
+                        <small>Credentials issued to your email or address will appear here</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. USER PROFILE PAGE -->
+    <div id="userProfilePage" class="page">
+        <div class="profile-container">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('dashboardPage')">← Back</button>
+                <h1>User Profile</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="profile-content">
+                <!-- Profile Info Card -->
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <div class="avatar-circle">
+                            <span id="profileInitials">U</span>
+                        </div>
+                        <button class="avatar-edit">📸</button>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h2 id="profileUsername">Username</h2>
+                        <p id="profileEmail">email@example.com</p>
+                        <div class="profile-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Blockchain Address:</span>
+                                <span class="meta-value" id="profileAddress">0x...</span>
+                                <button class="copy-btn" onclick="copyToClipboard('profileAddress')">📋</button>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Member Since:</span>
+                                <span class="meta-value" id="profileJoinDate">Loading...</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Last Login:</span>
+                                <span class="meta-value" id="profileLastLogin">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-number" id="profileIssuedCount">0</div>
+                        <div class="stat-label">Credentials Issued</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-number" id="profileOwnedCount">0</div>
+                        <div class="stat-label">Credentials Owned</div>
+                    </div>
+                </div>
+
+                <!-- Profile Actions -->
+                <div class="profile-actions">
+                    <button class="btn btn-secondary" onclick="editProfile()">Edit Profile</button>
+                    <button class="btn btn-secondary" onclick="changePassword()">Change Password</button>
+                    <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+<!-- QR Code Modal -->
+<div id="qrModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Scan to View Document</h3>
+            <button class="modal-close" onclick="closeModal('qrModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="qr-display">
+                <img id="qrImage" src="" alt="QR Code">
+                <p class="qr-description">Scan this QR code to directly access the credential document on IPFS</p>
+                <div class="credential-info">
+                    <p><strong>Credential ID:</strong></p>
+                    <p id="qrCredentialId" class="credential-id-display">Credential ID</p>
+                </div>
+            </div>
+            <div class="qr-actions">
+                <button class="btn btn-secondary" onclick="downloadQR()">📱 Download QR</button>
+                <button class="btn btn-secondary" onclick="shareQR()">🔗 Share Document</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <div class="modal-header">
+                <div class="success-icon">✅</div>
+                <h3 id="successTitle">Success!</h3>
+                <button class="modal-close" onclick="closeModal('successModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="successMessage">Operation completed successfully!</p>
+                <div id="successDetails" class="success-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal('successModal')">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content error-modal">
+            <div class="modal-header">
+                <div class="error-icon">❌</div>
+                <h3>Error</h3>
+                <button class="modal-close" onclick="closeModal('errorModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">An error occurred. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('errorModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
