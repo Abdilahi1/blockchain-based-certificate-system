@@ -33,6 +33,7 @@ This project is a **blockchain-powered certificate issuance and verification sys
 git clone https://github.com/Abdilahi1/blockchain-based-certificate-system.git
 cd blockchain-certificate-verification
 
+---
 
 # Step 2: Update package list
 echo "📦 Updating system packages..."
@@ -60,6 +61,23 @@ npm install -g ganache-cli
 echo "✅ Setup complete! You can now run the project."
 echo "👉 To start Ganache: ganache-cli"
 echo "👉 To run the backend: python App.py"
+
+# Access the Application
+Open your browser and go to:
+👉 http://localhost:5000
+
+# 🤝 Contributing
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+# 👨‍💻 Authors
+Daadir0
+Abdilahi 1
+
+
+
+
+
+
 
 
 
